@@ -1,0 +1,13 @@
+[target.default]
+# Limits are optional; 1 KB = 1024 bytes.
+size_limit_kb = 2048
+file_size_limit_kb = 128
+
+# Relative paths resolve from this config file's directory.
+include = ["src", "Cargo.*"]
+exclude = ["node_modules", "*.woff", "secret*", "!secret-public.txt"]
+
+# Add more targets with their own rules and limits:
+# [target.docs]
+# include = ["/absolute/path/to/documents/**/*.txt"]
+# exclude = ["draft*"]

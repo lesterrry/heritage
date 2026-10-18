@@ -1,0 +1,28 @@
+name: CI
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: fmt
+            command: cargo fmt --check
+          - name: tests
+            command: cargo test --locked
+          - name: clippy
+            command: cargo clippy --locked --all-targets -- -D warnings
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Run ${{ matrix.name }}
+        run: ${{ matrix.command }}
