@@ -96,15 +96,3 @@ it. Review the resulting changes with `git diff` and `git status`, then commit
 them yourself. The command does not stage, commit, or push changes, and does not
 merge the unrelated template histories. This recipe uses syntax supported by
 `just 1.21.0`.
-
-For an existing private repository that does not have this recipe yet, first
-publish these changes to the public template. With any existing edits to the
-shared files committed, bootstrap the recipe in the private repository once:
-
-```sh
-git fetch --no-tags https://github.com/lesterrry/heritage.git master
-git restore --source=FETCH_HEAD --worktree -- justfile tools/update-template.sh
-git add justfile tools/update-template.sh
-git commit -m "Add template update command"
-just update-template
-```
