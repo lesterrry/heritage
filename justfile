@@ -14,3 +14,7 @@ init:
     @if [ -e config.toml ] || [ -L config.toml ]; then echo 'error: config.toml already exists' >&2; exit 1; fi
     cargo build --release
     (set -C; cat config_example.toml > config.toml)
+
+# Update shared code and settings from the public template.
+update-template:
+    @sh tools/update-template.sh

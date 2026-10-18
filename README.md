@@ -72,3 +72,39 @@ cargo fmt --check
 cargo test
 cargo clippy --all-targets -- -D warnings
 ```
+
+To update a private repository created from this template:
+
+```sh
+just update-template
+```
+
+The command fetches `master` from the `upstream` remote and replaces the shared
+files with that snapshot. If `upstream` is absent, it is added as
+`https://github.com/lesterrry/heritage.git` with pushing disabled. An existing
+`upstream` remote is used as configured; `origin` is unchanged.
+
+The managed paths are `Cargo.toml`, `Cargo.lock`, `config_example.toml`, `justfile`,
+`rustfmt.toml`, `README.md`, `src/`, `tests/`, `.github/`, `.vscode/`, and `tools/`.
+These directories belong entirely to the template; files removed from the template
+are also removed locally. The local `config.toml`, `targets/`, `.gitignore`, and
+other paths are preserved. Avoid storing private files inside managed directories.
+
+Local changes, untracked files, or ignored files inside managed paths stop the
+update before fetching. Changes to backup data outside those paths do not block
+it. Review the resulting changes with `git diff` and `git status`, then commit
+them yourself. The command does not stage, commit, or push changes, and does not
+merge the unrelated template histories. This recipe uses syntax supported by
+`just 1.21.0`.
+
+For an existing private repository that does not have this recipe yet, first
+publish these changes to the public template. With any existing edits to the
+shared files committed, bootstrap the recipe in the private repository once:
+
+```sh
+git fetch --no-tags https://github.com/lesterrry/heritage.git master
+git restore --source=FETCH_HEAD --worktree -- justfile tools/update-template.sh
+git add justfile tools/update-template.sh
+git commit -m "Add template update command"
+just update-template
+```
