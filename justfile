@@ -1,10 +1,11 @@
+set positional-arguments
+
 test:
     cargo test
     cargo fmt --check
     cargo clippy --all-targets -- -D warnings
 
 # Run the release build, forwarding each argument unchanged.
-[positional-arguments]
 run *args:
     cargo run --release -- "$@"
 
